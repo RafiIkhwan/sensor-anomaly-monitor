@@ -96,8 +96,8 @@ export class MonitoringService {
   // Method untuk testing notification tanpa duplicating service
   async testNotification() {
     const testAnomaly = {
-      id: `test_${Date.now()}`,
-      deviceId: 'TEST_DEVICE',
+      id: `test-${Date.now()}`,
+      deviceId: 'TEST-DEVICE',
       type: 'level_change' as const,
       message: 'This is a test anomaly notification from your monitoring system.',
       timestamp: Date.now(),

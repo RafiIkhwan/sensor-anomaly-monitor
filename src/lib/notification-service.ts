@@ -76,8 +76,7 @@ ${anomaly.message}
     if (!this.telegramBot || !process.env.TELEGRAM_CHAT_ID) {
       throw new Error('Telegram not configured');
     }
-    console.log('Sending Telegram message:', message);
-    console.log('Sending Telegram message to:', process.env.TELEGRAM_CHAT_ID);
+    
     try {
       await this.telegramBot.sendMessage(process.env.TELEGRAM_CHAT_ID, message, {
         parse_mode: 'Markdown'
