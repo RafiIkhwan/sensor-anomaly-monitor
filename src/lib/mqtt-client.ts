@@ -4,20 +4,23 @@ import { SensorData } from '../types/sensor';
 export class MQTTClient {
   private client: mqtt.MqttClient | null = null;
   private messageHandlers: ((topic: string, data: SensorData) => void)[] = [];
+  private clientId: string;
 
   constructor() {
+    this.clientId = `sensor-monitor-${Math.random().toString(16).slice(2)}`;
     this.connect();
   }
 
   private connect() {
     const options: mqtt.IClientOptions = {
       host: process.env.MQTT_BROKER_URL?.replace('mqtt://', ''),
-      clientId: `sensor-monitor-${Math.random().toString(16).slice(2)}`,
       port: process.env.MQTT_PORT ? parseInt(process.env.MQTT_PORT) : 1883,
+      clientId: this.clientId,
       username: process.env.MQTT_USERNAME,
       password: process.env.MQTT_PASSWORD,
       reconnectPeriod: 5000,
       connectTimeout: 30000,
+      clean: true,
     };
 
     this.client = mqtt.connect(process.env.MQTT_BROKER_URL!, options);
@@ -57,8 +60,13 @@ export class MQTTClient {
 
   disconnect() {
     if (this.client) {
-      this.client.end();
+      console.log(`Disconnecting MQTT client: ${this.clientId}`);
+      this.client.end(true);
       this.client = null;
     }
+  }
+  
+  getClientId() {
+    return this.clientId;
   }
 }

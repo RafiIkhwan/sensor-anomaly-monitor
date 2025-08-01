@@ -7,17 +7,14 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       const { device, type, limit } = req.query;
       let anomalies = AnomalyStorage.getAnomalies();
 
-      // Filter by device if specified
       if (device && typeof device === 'string') {
         anomalies = AnomalyStorage.getAnomaliesByDevice(device);
       }
 
-      // Filter by type if specified
       if (type && typeof type === 'string') {
         anomalies = AnomalyStorage.getAnomaliesByType(type);
       }
 
-      // Limit results if specified
       if (limit && typeof limit === 'string') {
         const limitNum = parseInt(limit);
         if (!isNaN(limitNum)) {
